@@ -26,7 +26,7 @@ gradleConfig:
   ## Here you specify the command to execute
 
   command: "hello"
-  sourceLocation: ".jfrog-pipelines"
+  sourceLocation: "./.jfrog-pipelines/template-GradleCI-2"
   ## These repositories must first be created in Artifactory.
   ## The resolver is used to resolve dependencies. It is recommended to
   ## use a remote repository so that any external dependencies will be cached
