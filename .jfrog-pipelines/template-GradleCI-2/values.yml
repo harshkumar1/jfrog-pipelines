@@ -17,9 +17,9 @@ artIntegration: hk_artifactory
 
 ##### Repository Details
 repo:
-  path: "nbcdotcom/nbc-app-android"
+  path: harshkumar1/jfrog-pipelines
   gitIntegration: hk_github
-  branchPattern: "DEVOPS-8735"
+  branchPattern: main
 
 ##### Gradle configuration
 gradleConfig:
