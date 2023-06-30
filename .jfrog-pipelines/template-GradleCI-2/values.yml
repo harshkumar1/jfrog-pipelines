@@ -3,7 +3,7 @@
 namePrefix: NBC_Android
 
 ## The name of your Artifactory integration
-artIntegration: ArtifactoryInt
+artIntegration: hk_artifactory
 
 ##### Artifactory Build Info
 ## set this to `true` to publish a build
@@ -18,7 +18,7 @@ artIntegration: ArtifactoryInt
 ##### Repository Details
 repo:
   path: "nbcdotcom/nbc-app-android"
-  gitIntegration: NBC_Android
+  gitIntegration: hk_github
   branchPattern: "DEVOPS-8735"
 
 ##### Gradle configuration
