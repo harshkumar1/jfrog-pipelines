@@ -16,6 +16,8 @@ pipelines:
         configuration:
           inputResources:
             - name: gitTagSampleRepo
+          integrations:
+            - name: hk_github_sample
         execution:
           onStart:
            - echo "Onstart"
