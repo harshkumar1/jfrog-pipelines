@@ -27,7 +27,7 @@ pipelines:
             - echo $res_gitTagSampleRepo_resourcePath
             - epochTime=$(date +%s)
             - echo $epochTime
-            - tagName="gitTagSample_${epochTime}"
+            - tagName="gitTagSample_${epochTime}_${run_number}"
             - echo ${tagName}
             - pushd $res_gitTagSampleRepo_resourcePath
             - git tag ${tagName}
