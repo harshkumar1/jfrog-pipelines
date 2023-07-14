@@ -1,5 +1,5 @@
 resources:
-  - name: jira_transition_task_git_repo
+  - name: jfrog_pipeline_repo
     type: GitRepo
     configuration:
       path: harshkumar1/jfrog-pipelines
