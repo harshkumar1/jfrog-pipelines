@@ -1,0 +1,38 @@
+pipelines:
+  - name: jira_transition_task_publish_pipeline
+    configuration:
+      jfrogCliVersion: 2
+      environmentVariables:
+        readOnly:
+          TASK_NAME: jira-transition
+          TASK_VERSION: 0.0.${run_number}
+          TASK_REPOSITORY: pipelines-tasks-local
+          RESOLVE_REPO: npm-virtual
+          JIRA_INT: deepikajira
+      integrations:
+        - name: hk_jiraIntegration
+    steps:
+      - name: test_published_jira_transition_task
+        type: Bash
+        configuration:
+          inputResources:
+            - name: jira_transition_task_git_repo
+              trigger: false
+            - name: jira_comment_task_git_rep
+              trigger: false
+        execution:
+          onExecute:
+            - exit 1
+          onFailure:
+            # Run JIRA Comment task
+            - task: jfrog/jira-comment@v0.1.0
+              input:
+                issueKey: "PIPE-13213"
+                jiraIntegrationName: "hk_jiraIntegration"
+                comment: "Commenting ${run_number}"
+            # Run JIRA Transition task
+            - task: jfrog/jira-transition@v0.0.1
+              input:
+                issueKey: "PIPE-13213"
+                jiraIntegrationName: "hk_jiraIntegration"
+                transitionName: "In Progress"
