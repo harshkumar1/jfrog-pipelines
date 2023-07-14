@@ -5,7 +5,7 @@ pipelines:
       integrations:
         - name: hk_jiraIntegration
     steps:
-      - name: test_published_jira_transition_task
+      - name: jira_task_demo
         type: Bash
         execution:
           onExecute:
