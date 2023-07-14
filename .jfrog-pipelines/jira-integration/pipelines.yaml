@@ -1,5 +1,5 @@
 pipelines:
-  - name: jira_transition_task_publish_pipeline
+  - name: jira_task_demo_pipeline
     configuration:
       jfrogCliVersion: 2
       integrations:
