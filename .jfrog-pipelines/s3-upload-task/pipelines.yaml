@@ -27,6 +27,6 @@ pipelines:
             # S3 Upload Task
             - task: jfrog/upload-file-to-s3@v0.1.0
               input:
-                sourceFilePath: "${res_jfrog_pipeline_repo_resourcePath}/sample3.txt"
+                sourceFilePath: "${res_jfrog_pipeline_repo_resourcePath}/sample.txt"
                 targetBucketName: "harsh-s3-bucket-1"
                 awsIntegration: "hk_awsIntegration"
