@@ -17,12 +17,33 @@ pipelines:
       inputResources:
         - name: jfrog_pipeline_repo
           trigger: false
+      environmentVariables:
+        readOnly:
+          env1: read_only_env1
+          env2:
+            default: env2_pipe_value2
+            description: This is env2 description
+            values:
+              - env2_pipe_value1
+              - env2_pipe_value2
+              - env2_pipe_value3
+          env3:
+              default: env3_pipe_value3
+              description: This is step_env1 description
+              values:
+                - env3_pipe_value1
+                - env3_pipe_value2
+                - env3_pipe_value3
+              allowCustom: true
     steps:
       - name: s3upload_task_demo
         type: Bash
         execution:
           onExecute:
             - echo "onExecute"
+            - echo ${env1}
+            - echo ${env2}
+            - echo ${env3}
           onComplete:
             # S3 Upload Task
             - task: jfrog/upload-file-to-s3@v0.1.0
