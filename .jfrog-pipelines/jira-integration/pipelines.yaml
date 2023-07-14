@@ -1,6 +1,9 @@
 pipelines:
   - name: jira_task_demo_pipeline
     configuration:
+      integrations:
+        - name: hk_jiraIntegration
+        - name: hk_artifactory
     steps:
       - name: jira_task_demo
         type: Bash

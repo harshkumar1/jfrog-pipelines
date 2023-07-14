@@ -1,0 +1,32 @@
+resources:
+  - name: jira_transition_task_git_repo
+    type: GitRepo
+    configuration:
+      path: harshkumar1/jfrog-pipelines
+      gitProvider: hk_github_sample
+      branches:
+        include: ^main$
+      cloneProtocol: https
+
+pipelines:
+  - name: s3upload_task_demo_pipeline
+    configuration:
+      integrations:
+        - name: hk_awsIntegration
+        - name: hk_artifactory
+      inputResources:
+        - name: jfrog_pipeline_repo
+          trigger: false
+    steps:
+      - name: s3upload_task_demo
+        type: Bash
+        execution:
+          onExecute:
+            - echo "onExecute"
+          onComplete:
+            # S3 Upload Task
+            - task: jfrog/upload-file-to-s3@v0.1.0
+              input:
+                sourceFilePath: "${res_jira_comment_task_git_rep_resourcePath}/sample3.txt"
+                targetBucketName: "harsh-s3-bucket-1"
+                awsIntegration: "hk_awsIntegration"
