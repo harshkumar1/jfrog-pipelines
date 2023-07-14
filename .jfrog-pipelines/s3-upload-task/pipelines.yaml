@@ -38,12 +38,33 @@ pipelines:
     steps:
       - name: s3upload_task_demo
         type: Bash
+        configuration:
+          environmentVariables:
+            step_env1: step_env1
+            step_env2:
+              default: step_env2_value1
+              description: This is env2 description
+              values:
+                - step_env2_value1
+                - step_env2_value2
+                - step_env2_value3
+            step_env3:
+              default: step_env3_value3
+              description: This is step_env1 description
+              values:
+                - step_env3_value1
+                - step_env3_value2
+                - step_env3_value3
+              allowCustom: true
         execution:
           onExecute:
             - echo "onExecute"
             - echo ${env1}
             - echo ${env2}
             - echo ${env3}
+            - echo ${step_env1}
+            - echo ${step_env2}
+            - echo ${step_env3}
           onComplete:
             # S3 Upload Task
             - task: jfrog/upload-file-to-s3@v0.1.0
