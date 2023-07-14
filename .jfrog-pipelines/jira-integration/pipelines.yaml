@@ -4,6 +4,7 @@ pipelines:
       jfrogCliVersion: 2
       integrations:
         - name: hk_jiraIntegration
+        - name: hk_artifactory
     steps:
       - name: jira_task_demo
         type: Bash
