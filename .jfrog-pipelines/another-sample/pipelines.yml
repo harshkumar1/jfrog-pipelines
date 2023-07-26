@@ -43,8 +43,9 @@ pipelines:
             #- name: AWS_S3_NBC_WWW
             #- name: APPSTORE_KEY
           environmentVariables:
-            BRAND:
+            brand:
               default: nbc
+              description: Choose your Brand
               values:
                 - nbc
                 - oxygen
