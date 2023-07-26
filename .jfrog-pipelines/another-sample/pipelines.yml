@@ -95,7 +95,7 @@ pipelines:
           inputResources:
             - name: {{ .Values.var.pipelineName }}_build_info
             - name:  {{ .Values.var.pipelineName }}
-          integrations:
+          #integrations:
             #- name: AWS_S3_NBC_WWW
             #- name: {{ .Values.var.artifactory }}
         execution:
