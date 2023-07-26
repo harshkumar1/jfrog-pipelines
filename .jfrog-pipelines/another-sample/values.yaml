@@ -1,0 +1,9 @@
+var:
+  pipelineName: android_basic_sample_another_sample
+  gitProvider: hk_github_sample
+  path: harshkumar1/jfrog-pipelines
+  branches: main
+  artifactory: hk_artifactory
+  #repo: ??
+  customImage: pipelines.jfrog.io/pipelines-runtime-images/pipelines-u20-java11-android-3002
+  customImageTag: 1

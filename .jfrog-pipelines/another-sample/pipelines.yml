@@ -1,0 +1,109 @@
+valuesFilePath: ./values.yaml
+resources:
+  - name: {{ .Values.var.pipelineName }}
+    type: GitRepo
+    configuration:
+      gitProvider: {{ .Values.var.gitProvider }}
+      path: {{ .Values.var.path }}
+      branches:
+        include: {{ .Values.var.branches }}
+  - name: {{ .Values.var.pipelineName }}_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: {{ .Values.var.artifactory }}
+      buildName: {{ .Values.var.pipelineName }}
+      buildNumber: ${run_number}
+
+pipelines:
+  - name: {{ .Values.var.pipelineName }}
+    configuration:
+      jfrogCliVersion: '2'
+      integrations:
+        - name : {{ .Values.var.artifactory }}
+      runtime:
+        type: image
+        image:
+          custom:
+            name: '{{ .Values.var.customImage }}'
+            tag: '{{ .Values.var.customImageTag }}'
+            #registry: Android_artifactory
+            #sourceRepository: local-docker-repo
+
+    steps:
+      - name: Build_Apk
+        type: Bash
+        configuration:
+          affinityGroup: build_assemble
+          inputResources:
+            - name:  {{ .Values.var.pipelineName }}
+          outputResources:
+            - name: {{ .Values.var.pipelineName }}_build_info
+          integrations:
+            - name: {{ .Values.var.gitProvider }}
+            #- name: AWS_S3_NBC_WWW
+            #- name: APPSTORE_KEY
+          environmentVariables:
+            BRAND:
+              default: nbc
+              values:
+                - nbc
+                - oxygen
+                - bravo
+                - syfy
+                - e
+                - usa
+                - telemundo
+                - universo
+        execution:
+          onStart:
+            #- AWS_ACCESS_KEY_ID=int_AWS_S3_NBC_WWW_accessKeyId
+            #- AWS_SECRET_ACCESS_KEY=int_AWS_S3_NBC_WWW_secretAccessKey
+            #- AWS_DEFAULT_REGION=us-east-1
+            #- key_password=int_APPSTORE_KEY_password
+            #- key_alias=int_APPSTORE_KEY_username
+            #- S3_BUCKET="android-keys-nbc-www"
+            #- KEY="nbcdevkey.jks"
+            #- BRAND_APP_ID="com.nbc.${BRAND}app.debug"
+            #- aws s3 cp s3://$S3_BUCKET/$KEY.enc .
+            #- BUILD_NUMBER=$(date +%Y%m%d%H%M%S)
+            #- BUILD_NUMBER_NEW=$(($BUILD_NUMBER+6600))
+            - echo "its working"
+            #- aws --region=us-east-1  kms decrypt --ciphertext-blob fileb://$KEY.enc --query Plaintext  --output text | base64 -d  > $KEY
+            #- ./gradlew clean :app:assembleBrandsFlavourBeta -PbrandId="${BRAND}" -PversionCode=$BUILD_NUMBER_NEW -PapplicationId=${BRAND_APP_ID} -PstoreFile=$KEY -PstorePassword=$key_password -PkeyAlias=$key_alias -PkeyPassword=$key_password
+            #- rm $KEY*
+            #- mv app/build/outputs/apk/brandsFlavour/beta/app-brandsFlavour-beta.apk app/build/outputs/apk/brandsFlavour/beta/${TODAY}-androidmobile-${BRAND}-beta-$BUILD_NUMBER.apk
+            #- ls -ltr app/build/outputs/apk/brandsFlavour/beta/${TODAY}-androidmobile-${BRAND}-beta-$BUILD_NUMBER.apk
+
+          onSuccess:
+            - echo "Job well done!"
+          onFailure:
+            - echo "uh oh, something went wrong"
+          onComplete:
+            - echo "Cleaning up some stuff"
+      - name: assemble
+        type: GradleBuild
+        configuration:
+          affinityGroup: build_assemble
+          inputSteps:
+            - name: Build_Apk
+          gradleCommand: assemble
+          sourceLocation: .
+          useWrapper: true
+          forceXrayScan: true
+          failOnScan: false
+          autoPublishBuildInfo: false
+          inputResources:
+            - name: {{ .Values.var.pipelineName }}_build_info
+            - name:  {{ .Values.var.pipelineName }}
+          integrations:
+            #- name: AWS_S3_NBC_WWW
+            #- name: {{ .Values.var.artifactory }}
+        execution:
+          onStart:
+            - echo "Preparing for work..."
+          onSuccess:
+            - echo "Job well done!"
+          onFailure:
+            - 'echo "uh oh, something went wrong"'
+          onComplete:
+            - echo "Cleaning up some stuff"
